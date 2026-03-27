@@ -1,0 +1,379 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{geometry}
+\usepackage{bm}
+\geometry{margin=1in}
+
+\title{\textbf{CSE 400: Fundamentals of Probability in Computing}\\
+Lecture 20: Linear Transformations and Expectations of Multiple Random Variables}
+\author{Group: S1 G17}
+\date{March 19, 2025}
+
+\begin{document}
+
+\maketitle
+
+\section*{Overview}
+This lecture focuses on the statistical representation of multiple random variables, their transformations, and multivariate Gaussian distributions. The key objective is to understand how random vectors behave under linear transformations and how their mean and covariance evolve.
+
+\textbf{Key Topics Covered:}
+\begin{itemize}
+    \item Random vectors
+    \item Mean vector
+    \item Correlation and covariance matrices
+    \item Linear transformation: $Y = AX + b$
+    \item Transformation of mean and covariance
+    \item Multivariate Gaussian distributions
+    \item Case study: Smart City system
+\end{itemize}
+
+\section{Random Vector Representation}
+\subsection{Definition}
+For multiple random variables $X_1, X_2, \dots, X_N$, we define a random vector:
+\[
+\mathbf{X} = 
+\begin{bmatrix}
+X_1 \\
+X_2 \\
+\vdots \\
+X_N
+\end{bmatrix}
+\]
+
+\begin{itemize}
+    \item A \textbf{random vector} is a compact representation of multiple random variables.
+    \item It allows vector/matrix-based analysis.
+\end{itemize}
+
+\textbf{Summary:} Converts multiple RVs into a structured mathematical object.
+
+\section{Mean Vector}
+\subsection{Definition}
+\[
+\bm{\mu}_X = \mathbb{E}[\mathbf{X}]
+\]
+
+\[
+\bm{\mu}_X =
+\begin{bmatrix}
+\mathbb{E}[X_1] \\
+\mathbb{E}[X_2] \\
+\vdots \\
+\mathbb{E}[X_N]
+\end{bmatrix}
+\]
+
+\begin{itemize}
+    \item Represents average behavior of each component.
+\end{itemize}
+
+\textbf{Key Insight:} Mean vector gives the center of the distribution.
+
+\section{Correlation Matrix}
+\subsection{Definition}
+\[
+R_{XX} = \mathbb{E}[\mathbf{X}\mathbf{X}^T]
+\]
+
+\[
+R_{XX}(i,j) = \mathbb{E}[X_i X_j]
+\]
+
+\[
+R_{XX} =
+\begin{bmatrix}
+\mathbb{E}[X_1X_1] & \mathbb{E}[X_1X_2] & \cdots \\
+\mathbb{E}[X_2X_1] & \mathbb{E}[X_2X_2] & \cdots \\
+\vdots & \vdots & \ddots
+\end{bmatrix}
+\]
+
+\begin{itemize}
+    \item Symmetric matrix
+\end{itemize}
+
+\textbf{Summary:} Measures joint behavior including mean effects.
+
+\section{Covariance Matrix}
+\subsection{Definition}
+\[
+C_{XX} = \mathbb{E}[(\mathbf{X} - \bm{\mu}_X)(\mathbf{X} - \bm{\mu}_X)^T]
+\]
+
+\[
+C_{XX} =
+\begin{bmatrix}
+\text{Var}(X_1) & \text{Cov}(X_1,X_2) \\
+\text{Cov}(X_2,X_1) & \text{Var}(X_2)
+\end{bmatrix}
+\]
+
+\begin{itemize}
+    \item Diagonal = variances
+    \item Off-diagonal = covariances
+\end{itemize}
+
+\textbf{Key Property:}
+\[
+\text{Cov}(X_i, X_j) = \text{Cov}(X_j, X_i)
+\]
+
+\textbf{Summary:} Captures dependencies between variables.
+
+\section{Linear Transformation}
+\subsection{Model}
+\[
+\mathbf{Y} = A\mathbf{X} + \mathbf{b}
+\]
+
+\begin{itemize}
+    \item $A$ = transformation matrix
+    \item $\mathbf{b}$ = shift vector
+\end{itemize}
+
+\textbf{Interpretation:}
+\begin{itemize}
+    \item $A$ scales/rotates
+    \item $b$ shifts
+\end{itemize}
+
+\section{Mean Transformation}
+\subsection{Derivation}
+\[
+\bm{\mu}_Y = \mathbb{E}[Y] = \mathbb{E}[AX + b]
+\]
+
+\[
+= A\mathbb{E}[X] + b
+\]
+
+\[
+\boxed{\bm{\mu}_Y = A\bm{\mu}_X + b}
+\]
+
+\textbf{Summary:} Mean transforms linearly.
+
+\section{Correlation Transformation}
+\[
+R_{YY} = \mathbb{E}[YY^T]
+\]
+
+\[
+= \mathbb{E}[(AX+b)(AX+b)^T]
+\]
+
+\[
+= AR_{XX}A^T + A\mu_X b^T + b\mu_X^T A^T + bb^T
+\]
+
+\textbf{Key Result:}
+\[
+\boxed{R_{YY} = AR_{XX}A^T + A\mu_X b^T + b\mu_X^T A^T + bb^T}
+\]
+
+\section{Covariance Transformation}
+\subsection{Key Observation}
+\[
+Y - \mu_Y = A(X - \mu_X)
+\]
+
+\subsection{Derivation}
+\[
+C_{YY} = \mathbb{E}[(Y-\mu_Y)(Y-\mu_Y)^T]
+\]
+
+\[
+= A C_{XX} A^T
+\]
+
+\[
+\boxed{C_{YY} = A C_{XX} A^T}
+\]
+
+\textbf{Important Note:} Shift $b$ does not affect covariance.
+
+\section{Summary of Linear Transformation}
+If $Y = AX + b$:
+\begin{itemize}
+    \item Mean: $\bm{\mu}_Y = A\bm{\mu}_X + b$
+    \item Covariance: $C_{YY} = AC_{XX}A^T$
+    \item Correlation: includes additional terms with $b$
+\end{itemize}
+
+\section{Numerical Example}
+Given:
+\[
+\bm{\mu}_X =
+\begin{bmatrix}
+2\\-1\\1
+\end{bmatrix}, \quad
+A =
+\begin{bmatrix}
+1 & 0 & -1\\
+0 & -1 & 1\\
+-1 & 1 & 0
+\end{bmatrix}
+\]
+
+\subsection{Mean}
+\[
+\bm{\mu}_Y = A\bm{\mu}_X =
+\begin{bmatrix}
+1\\2\\-3
+\end{bmatrix}
+\]
+
+\subsection{Covariance}
+\[
+C_{YY} = R_{YY} - \mu_Y \mu_Y^T
+\]
+
+\[
+C_{YY} =
+\begin{bmatrix}
+16 & -8 & -8\\
+-8 & 10 & -2\\
+-8 & -2 & 10
+\end{bmatrix}
+\]
+
+\textbf{Summary:} Practice matrix multiplication carefully.
+
+\section{Gaussian Distributions}
+\subsection{1D Gaussian}
+\[
+f_X(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)
+\]
+
+\subsection{2D Gaussian}
+\[
+f_{XY}(x,y) =
+\frac{1}{2\pi\sigma_X\sigma_Y\sqrt{1-\rho^2}}
+\exp(\cdots)
+\]
+
+\section{Multivariate Gaussian}
+\subsection{Definition}
+\[
+\mathbf{X} \sim \mathcal{N}(\mu, C)
+\]
+
+\[
+f_X(x) =
+\frac{1}{\sqrt{(2\pi)^N \det(C)}}
+\exp\left(-\frac{1}{2}(x-\mu)^T C^{-1}(x-\mu)\right)
+\]
+
+\textbf{Components:}
+\begin{itemize}
+    \item $\mu$: mean vector
+    \item $C$: covariance matrix
+\end{itemize}
+
+\textbf{Summary:} Fully described by mean + covariance.
+
+\section{Special Case: Uncorrelated Gaussian}
+If:
+\[
+\text{Cov}(X_i,X_j)=0 \quad i\neq j
+\]
+
+Then:
+\[
+f_X(x) = \prod_{i=1}^N \text{Gaussian}(x_i)
+\]
+
+\textbf{Insight:} Covariance diagonal $\Rightarrow$ independent structure.
+
+\section{Homework Result}
+\[
+\text{Var}(X+Y) = \text{Var}(X) + \text{Var}(Y) + 2\text{Cov}(X,Y)
+\]
+
+\section{Case Study: Smart City System}
+\subsection{Random Vector}
+\[
+X =
+\begin{bmatrix}
+\text{Traffic}\\
+\text{Speed}\\
+\text{Rain}\\
+\text{Temp}\\
+\text{AQI}
+\end{bmatrix}
+\]
+
+\subsection{Mean Example}
+\[
+\mu =
+\begin{bmatrix}
+120\\35\\2\\32\\180
+\end{bmatrix}
+\]
+
+\subsection{Covariance Interpretation}
+\begin{itemize}
+    \item Rain $\uparrow$ $\Rightarrow$ Traffic $\uparrow$
+    \item Rain $\uparrow$ $\Rightarrow$ Speed $\downarrow$
+    \item Traffic $\uparrow$ $\Rightarrow$ Pollution $\uparrow$
+\end{itemize}
+
+\textbf{Insight:} Covariance = dependency map.
+
+\subsection{Gaussian Assumption}
+\[
+X \sim \mathcal{N}(\mu, \Sigma)
+\]
+
+\textbf{Why Gaussian?}
+\begin{itemize}
+    \item Central Limit Theorem
+    \item Sensor noise
+    \item Analytical simplicity
+\end{itemize}
+
+\subsection{Transformation (Congestion Index)}
+\[
+Y = 0.6X_1 - 0.4X_2 + 0.8X_3
+\]
+
+\[
+Y = a^T X
+\]
+
+\textbf{Results:}
+\begin{itemize}
+    \item $Y$ is Gaussian
+    \item $\mathbb{E}[Y] = a^T\mu$
+    \item $\text{Var}(Y) = a^T \Sigma a$
+\end{itemize}
+
+\subsection{Inference}
+If rainfall increases:
+\begin{itemize}
+    \item Speed decreases
+    \item Traffic increases
+    \item Pollution increases
+\end{itemize}
+
+\textbf{Final Insight:}
+\begin{itemize}
+    \item Random vector = system state
+    \item Covariance = relationships
+    \item Gaussian = structured uncertainty
+    \item Transformation = derived metrics
+\end{itemize}
+
+\section*{Final Summary}
+\begin{itemize}
+    \item Random vectors simplify multi-variable analysis
+    \item Mean shifts with transformation, covariance does not depend on shift
+    \item Linear transformations preserve Gaussianity
+    \item Covariance matrix is central to understanding dependencies
+    \item Real-world systems (like Smart Cities) can be modeled using these concepts
+\end{itemize}
+
+\vspace{0.5cm}
+\noindent \textbf{Source:} Lecture 20 Slides :contentReference[oaicite:0]{index=0}
+
+\end{document}
