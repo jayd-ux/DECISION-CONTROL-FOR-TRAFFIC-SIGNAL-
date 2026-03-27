@@ -1,0 +1,134 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb}
+
+\title{CSE400: Fundamentals of Probability in Computing}
+\author{Lecture 20: Linear Transformations and Expectations of Multiple RVs}
+\date{March 19, 2025}
+
+\begin{document}
+
+\maketitle
+
+\section{Outline}
+\begin{itemize}
+    \item Statistical Representation of Random Vectors
+    \item Mean Vector, Correlation, and Covariance Matrices
+    \item Linear Transformations
+    \item Mapping properties under $Y = AX + b$
+    \item Multivariate Gaussian Distributions
+    \item From 1D/2D cases to N-dimensional Joint PDFs
+    \item Special Cases and Properties
+    \item Implications of zero correlation and matrix factorization
+\end{itemize}
+
+\section{Statistical Representation of Random Vectors}
+\subsection{Definition}
+Let $\mathbf{X}$ be an $N$-dimensional random vector:
+\[
+\mathbf{X} = 
+\begin{bmatrix}
+X_1 \\
+X_2 \\
+\vdots \\
+X_N
+\end{bmatrix}
+\]
+
+\section{Mean Vector}
+\subsection{Definition}
+The mean vector is:
+\[
+\boldsymbol{\mu} = \mathbb{E}[\mathbf{X}] =
+\begin{bmatrix}
+\mathbb{E}[X_1] \\
+\mathbb{E}[X_2] \\
+\vdots \\
+\mathbb{E}[X_N]
+\end{bmatrix}
+\]
+
+\section{Covariance Matrix}
+\subsection{Definition}
+The covariance matrix is:
+\[
+\Sigma = \mathbb{E}[(\mathbf{X} - \boldsymbol{\mu})(\mathbf{X} - \boldsymbol{\mu})^T]
+\]
+
+\subsection{Interpretation}
+\begin{itemize}
+    \item Represents dependencies between variables
+    \item Acts as a “dependency map”
+\end{itemize}
+
+\section{Multivariate Gaussian Distribution}
+\subsection{Assumption}
+\[
+\mathbf{X} \sim \mathcal{N}(\boldsymbol{\mu}, \Sigma)
+\]
+
+\subsection{Implication}
+The system is defined by:
+\begin{itemize}
+    \item Mean (typical conditions)
+    \item Covariance (interdependencies)
+\end{itemize}
+
+\section{Linear Transformations}
+\subsection{Definition}
+\[
+\mathbf{Y} = A\mathbf{X} + \mathbf{b}
+\]
+
+\subsection{Mapping Properties}
+\begin{itemize}
+    \item Linear transformation of random vector
+\end{itemize}
+
+\section{Case Study: Smart City Traffic + Weather System}
+
+\subsection{Step 1: Define Random Variables}
+\[
+\mathbf{X} =
+\begin{bmatrix}
+X_1 \\
+X_2 \\
+X_3 \\
+X_4 \\
+X_5
+\end{bmatrix}
+\]
+(N-dimensional random vector, here $N = 5$)
+
+\subsection{Step 2: Mean Vector}
+\[
+\boldsymbol{\mu} = \mathbb{E}[\mathbf{X}]
+\]
+
+\subsection{Step 3: Covariance Matrix Interpretation}
+\begin{itemize}
+    \item More rain $\Rightarrow$ more congestion
+    \item More rain $\Rightarrow$ lower speed
+    \item More traffic $\Rightarrow$ higher pollution
+    \item Higher temperature $\Rightarrow$ pollution disperses
+\end{itemize}
+
+\subsection{Step 4: Joint Gaussian Distribution}
+\[
+\mathbf{X} \sim \mathcal{N}(\boldsymbol{\mu}, \Sigma)
+\]
+
+\subsection{Step 6: Transformation}
+Define congestion index:
+\[
+\mathbf{Y} = A\mathbf{X} + \mathbf{b}
+\]
+
+\subsection{Inference}
+If rainfall increases:
+\begin{itemize}
+    \item Speed $\downarrow$
+    \item Traffic $\uparrow$
+    \item Pollution $\uparrow$
+\end{itemize}
+
+\end{document}
