@@ -1,0 +1,420 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb}
+
+\title{CSE 400: Fundamentals of Probability in Computing\\
+Lecture 20 Scribe}
+\author{Group: S1 G17 \\ Name: AryA Patel \\ ID: AU2440250}
+\date{March 19, 2025}
+
+\begin{document}
+
+\maketitle
+
+\section{Random Vector Representation}
+
+\subsection{Definition}
+For random variables $X_1, X_2, \dots, X_N$, we represent them as a vector:
+\[
+X =
+\begin{bmatrix}
+X_1 \\
+X_2 \\
+\vdots \\
+X_N
+\end{bmatrix}
+\]
+
+\begin{itemize}
+\item $X$ is called a random vector.
+\item It provides a compact representation of multiple random variables.
+\end{itemize}
+
+\section{Mean Vector}
+
+\subsection{Definition}
+The mean vector of $X$ is:
+\[
+\mu_X = E[X]
+\]
+
+\begin{itemize}
+\item Represents the average value of the random vector.
+\item Each element corresponds to the mean of one random variable.
+\end{itemize}
+
+\subsection{Structure}
+\[
+\mu_X =
+\begin{bmatrix}
+E[X_1] \\
+E[X_2] \\
+\vdots \\
+E[X_N]
+\end{bmatrix}
+\]
+
+\section{Correlation Matrix}
+
+\subsection{Definition}
+\[
+R_{XX} = E[XX^T]
+\]
+
+\[
+R_{XX}(i,j) = E[X_i X_j]
+\]
+
+\subsection{Matrix Representation}
+\[
+R_{XX} =
+\begin{bmatrix}
+E[X_1 X_1] & E[X_1 X_2] & \cdots & E[X_1 X_N] \\
+E[X_2 X_1] & E[X_2 X_2] & \cdots & E[X_2 X_N] \\
+\vdots & \vdots & \ddots & \vdots \\
+E[X_N X_1] & E[X_N X_2] & \cdots & E[X_N X_N]
+\end{bmatrix}
+\]
+
+\begin{itemize}
+\item $R_{XX}$ is a symmetric matrix.
+\end{itemize}
+
+\section{Covariance Matrix}
+
+\subsection{Definition}
+\[
+C_{XX} = E[(X - \mu_X)(X - \mu_X)^T]
+\]
+
+\subsection{Matrix Form}
+\[
+C_{XX} =
+\begin{bmatrix}
+\text{Var}(X_1) & \text{Cov}(X_1, X_2) & \cdots \\
+\text{Cov}(X_2, X_1) & \text{Var}(X_2) & \cdots \\
+\vdots & \vdots & \ddots
+\end{bmatrix}
+\]
+
+\begin{itemize}
+\item $\text{Cov}(X_i, X_j) = \text{Cov}(X_j, X_i)$
+\end{itemize}
+
+\section{Linear Transformation of Random Vectors}
+
+\subsection{Model}
+\[
+Y = AX + b
+\]
+
+\begin{itemize}
+\item $A$: Transformation matrix
+\item $b$: Constant vector
+\item $X$: Input random vector
+\end{itemize}
+
+\subsection{Expanded Form}
+\[
+Y_1 = a_{11}X_1 + a_{12}X_2 + \cdots + a_{1N}X_N + b_1
+\]
+\[
+Y_2 = a_{21}X_1 + a_{22}X_2 + \cdots + a_{2N}X_N + b_2
+\]
+\[
+\vdots
+\]
+\[
+Y_N = a_{N1}X_1 + a_{N2}X_2 + \cdots + a_{NN}X_N + b_N
+\]
+
+\section{Mean of Transformed Vector}
+
+\subsection{Definition}
+\[
+\mu_Y = E[Y]
+\]
+
+\subsection{Derivation}
+\[
+\mu_Y = E[AX + b]
+\]
+\[
+= E[AX] + E[b]
+\]
+
+\subsection{Result}
+\[
+\mu_Y = A\mu_X + b
+\]
+
+\section{Correlation Matrix Transformation}
+
+\subsection{Definition}
+\[
+R_{YY} = E[YY^T] = E[(AX + b)(AX + b)^T]
+\]
+
+\subsection{Expansion}
+\[
+R_{YY} = E[AXX^T A^T + AXb^T + bX^T A^T + bb^T]
+\]
+
+\subsection{Applying Expectation}
+\[
+R_{YY} = A E[XX^T] A^T + A E[X] b^T + b E[X]^T A^T + bb^T
+\]
+
+\subsection{Final Result}
+\[
+R_{YY} = A R_{XX} A^T + A \mu_X b^T + b \mu_X^T A^T + bb^T
+\]
+
+\section{Covariance Matrix Transformation}
+
+\subsection{Key Observation}
+\[
+Y - \mu_Y = (AX + b) - (A\mu_X + b) = A(X - \mu_X)
+\]
+
+\subsection{Derivation}
+\[
+C_{YY} = E[(Y - \mu_Y)(Y - \mu_Y)^T]
+\]
+\[
+= E[A(X - \mu_X)(X - \mu_X)^T A^T]
+\]
+
+\subsection{Result}
+\[
+C_{YY} = A C_{XX} A^T
+\]
+
+\begin{itemize}
+\item The shift $b$ does not affect covariance.
+\end{itemize}
+
+\section{Summary}
+
+If $Y = AX + b$, then:
+
+\begin{itemize}
+\item Mean:
+\[
+\mu_Y = A\mu_X + b
+\]
+
+\item Covariance:
+\[
+C_{YY} = A C_{XX} A^T
+\]
+
+\item Correlation:
+\[
+R_{YY} = A R_{XX} A^T + A \mu_X b^T + b \mu_X^T A^T + bb^T
+\]
+\end{itemize}
+
+\section{Example: Numerical Linear Transformation}
+
+Given:
+\[
+\mu_X =
+\begin{bmatrix}
+2 \\ -1 \\ 1
+\end{bmatrix}, \quad
+A =
+\begin{bmatrix}
+1 & 0 & -1 \\
+0 & -1 & 1 \\
+-1 & 1 & 0
+\end{bmatrix}, \quad
+R_{XX} =
+\begin{bmatrix}
+13 & 2 & 3 \\
+2 & 10 & 3 \\
+3 & 3 & 10
+\end{bmatrix}
+\]
+
+\subsection{(a) Mean Vector}
+\[
+\mu_Y = A\mu_X
+\]
+
+\[
+=
+\begin{bmatrix}
+1 & 0 & -1 \\
+0 & -1 & 1 \\
+-1 & 1 & 0
+\end{bmatrix}
+\begin{bmatrix}
+2 \\ -1 \\ 1
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 \\ 2 \\ -3
+\end{bmatrix}
+\]
+
+\subsection{(b) Correlation Matrix}
+
+Step 1:
+\[
+AR_{XX} =
+\begin{bmatrix}
+10 & -1 & -7 \\
+1 & -7 & 7 \\
+-11 & 8 & 0
+\end{bmatrix}
+\]
+
+Step 2:
+\[
+R_{YY} = (AR_{XX})A^T =
+\begin{bmatrix}
+17 & -6 & -11 \\
+-6 & 14 & -8 \\
+-11 & -8 & 19
+\end{bmatrix}
+\]
+
+\subsection{(c) Covariance Matrix}
+
+\[
+C_{YY} = R_{YY} - \mu_Y \mu_Y^T
+\]
+
+\[
+\mu_Y \mu_Y^T =
+\begin{bmatrix}
+1 \\ 2 \\ -3
+\end{bmatrix}
+\begin{bmatrix}
+1 & 2 & -3
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & 2 & -3 \\
+2 & 4 & -6 \\
+-3 & -6 & 9
+\end{bmatrix}
+\]
+
+\[
+C_{YY} =
+\begin{bmatrix}
+17 & -6 & -9 \\
+-6 & 14 & -8 \\
+-9 & -8 & 19
+\end{bmatrix}
+-
+\begin{bmatrix}
+1 & 2 & -3 \\
+2 & 4 & -6 \\
+-3 & -6 & 9
+\end{bmatrix}
+=
+\begin{bmatrix}
+16 & -8 & -8 \\
+-8 & 10 & -2 \\
+-8 & -2 & 10
+\end{bmatrix}
+\]
+
+\section{Gaussian Distributions}
+
+\subsection{Univariate Gaussian}
+\[
+f_X(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)
+\]
+
+\subsection{Joint Gaussian (2D)}
+\[
+f_{XY}(x,y) =
+\frac{1}{2\pi \sigma_X \sigma_Y \sqrt{1-\rho_{XY}^2}}
+\exp\left(
+-\frac{1}{2(1-\rho_{XY}^2)}
+\left[
+\left(\frac{x-\mu_X}{\sigma_X}\right)^2
+-2\rho_{XY}\left(\frac{x-\mu_X}{\sigma_X}\right)\left(\frac{y-\mu_Y}{\sigma_Y}\right)
++\left(\frac{y-\mu_Y}{\sigma_Y}\right)^2
+\right]
+\right)
+\]
+
+\section{Multivariate Gaussian Distribution}
+
+\subsection{Definition}
+\[
+X = [X_1, X_2, \dots, X_N]^T
+\]
+
+\[
+f_X(x) =
+\frac{1}{\sqrt{(2\pi)^N \det(C_{XX})}}
+\exp\left(
+-\frac{1}{2}(x-\mu_X)^T C_{XX}^{-1} (x-\mu_X)
+\right)
+\]
+
+\begin{itemize}
+\item $\mu_X$: Mean vector
+\item $C_{XX}$: Covariance matrix
+\end{itemize}
+
+\section{2D Gaussian Derivation}
+
+\subsection{Determinant}
+\[
+\det(C_{XX}) = \sigma_1^2 \sigma_2^2 - (\rho \sigma_1 \sigma_2)^2
+= \sigma_1^2 \sigma_2^2 (1-\rho^2)
+\]
+
+\subsection{Inverse}
+\[
+C_{XX}^{-1} =
+\frac{1}{\sigma_1^2 \sigma_2^2 (1-\rho^2)}
+\begin{bmatrix}
+\sigma_2^2 & -\rho\sigma_1\sigma_2 \\
+-\rho\sigma_1\sigma_2 & \sigma_1^2
+\end{bmatrix}
+\]
+
+\subsection{Quadratic Form}
+\[
+Q(x) = (x-\mu_X)^T C_{XX}^{-1} (x-\mu_X)
+\]
+
+\[
+Q(x) =
+\frac{1}{1-\rho^2}
+\left[
+\left(\frac{x_1-\mu_1}{\sigma_1}\right)^2
+-2\rho \left(\frac{x_1-\mu_1}{\sigma_1}\right)\left(\frac{x_2-\mu_2}{\sigma_2}\right)
++\left(\frac{x_2-\mu_2}{\sigma_2}\right)^2
+\right]
+\]
+
+\section{Uncorrelated Gaussian Variables}
+
+\subsection{Result}
+If $\text{Cov}(X_i, X_j) = 0$ for $i \neq j$, then:
+\[
+f_X(x) = \prod_{n=1}^{N}
+\frac{1}{\sqrt{2\pi\sigma_n^2}}
+\exp\left(-\frac{(x_n-\mu_n)^2}{2\sigma_n^2}\right)
+\]
+
+\begin{itemize}
+\item Covariance matrix is diagonal.
+\item Joint PDF factorizes into product of individual PDFs.
+\end{itemize}
+
+\section{Homework}
+
+\[
+\text{Var}(X+Y) = \text{Var}(X) + \text{Var}(Y) + 2\text{Cov}(X,Y)
+\]
+
+\end{document}
